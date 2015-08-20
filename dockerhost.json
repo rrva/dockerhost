@@ -1,0 +1,38 @@
+{
+ "builders": [
+    {
+      "boot_command": [
+        "<tab> inst.text inst.sshd url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/postinstall selinux=0<enter>"
+      ],
+      "http_directory": "http",
+      "disk_size": 65536,
+      "guest_os_type": "ubuntu-64",
+      "iso_checksum_type": "none",
+      "iso_urls": [ "Fedora-Server-netinst-x86_64-22.iso", "http://dl.fedoraproject.org/pub/fedora/linux/releases/22/Server/x86_64/iso/Fedora-Server-netinst-x86_64-22.iso" ],
+      "boot_wait": "4s",
+      "ssh_wait_timeout": "10000s",
+      "type": "vmware-iso",
+      "vm_name": "wily_core",
+      "ssh_username": "root",
+      "ssh_password": "",
+      "shutdown_command": "poweroff",
+      "vmx_data": {
+        "memsize": "2048",
+        "numvcpus": "2"
+      }
+    }
+  ],
+  "provisioners": [
+     {
+      "type": "shell",
+      "script": "install-ubuntu.sh"
+     }
+  ],
+  "post-processors": [
+    {
+      "keep_input_artifact": false,
+      "type": "vagrant",
+      "vagrantfile_template": "Vagrantfile.template"
+    }
+  ]
+}
