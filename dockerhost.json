@@ -9,15 +9,15 @@
       "guest_os_type": "ubuntu-64",
       "iso_checksum_type": "none",
       "iso_urls": [ "http://dl.fedoraproject.org/pub/fedora/linux/releases/22/Server/x86_64/iso/Fedora-Server-netinst-x86_64-22.iso" ],
-      "boot_wait": "4s",
+      "boot_wait": "10s",
       "ssh_wait_timeout": "10000s",
       "type": "vmware-iso",
       "ssh_username": "root",
       "ssh_password": "",
       "shutdown_command": "poweroff",
       "vmx_data": {
-        "memsize": "2048",
-        "numvcpus": "2"
+        "memsize": "512",
+        "numvcpus": "1"
       }
     },
     {
@@ -29,7 +29,7 @@
       "guest_os_type": "Ubuntu_64",
       "iso_checksum_type": "none",
       "iso_urls": [ "http://dl.fedoraproject.org/pub/fedora/linux/releases/22/Server/x86_64/iso/Fedora-Server-netinst-x86_64-22.iso" ],
-      "boot_wait": "4s",
+      "boot_wait": "10s",
       "ssh_wait_timeout": "10000s",
       "type": "virtualbox-iso",
       "ssh_username": "root",
