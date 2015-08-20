@@ -34,7 +34,7 @@
       "type": "virtualbox-iso",
       "ssh_username": "root",
       "ssh_password": "",
-      "shutdown_command": "poweroff",
+      "shutdown_command": "poweroff"
     }
   ],
   "provisioners": [
@@ -51,7 +51,7 @@
     },
     {
       "type": "atlas",
-      "only": ["vmware-iso"]
+      "only": ["vmware-iso"],
       "artifact": "rrva/dockerhost",
       "artifact_type": "vagrant.box",
       "metadata": {
@@ -61,7 +61,7 @@
     },
     {
       "type": "atlas",
-      "only": ["virtualbox-iso"]
+      "only": ["virtualbox-iso"],
       "artifact": "rrva/dockerhost",
       "artifact_type": "vagrant.box",
       "metadata": {
