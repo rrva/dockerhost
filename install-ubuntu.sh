@@ -12,7 +12,8 @@ mount -o compress=lzo,space_cache,discard /dev/sda4 /mnt
 cd /mnt
 mkdir boot
 mount /dev/sda3 /mnt/boot
-curl -s "${HTTP}/wily-core-amd64.tar.gz" | tar xvzpf -
+#curl -s "${HTTP}/wily-core-amd64.tar.gz" | tar xvzpf -
+curl -s http://cdimage.ubuntu.com/ubuntu-core/daily/current/wily-core-amd64.tar.gz | tar xvzpf -
 cp /etc/resolv.conf /mnt/etc/resolv.conf
 curl -s -O "${HTTP}/install-chroot.sh"
 for f in /sys /proc /dev ; do mount --rbind $f /mnt/$f ; done
