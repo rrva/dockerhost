@@ -2,13 +2,21 @@ DEBIAN_FRONTEND=noninteractive
 export DEBIAN_FRONTEND
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 export PATH
+cat << EOF > /usr/sbin/policy-rc.d
+#!/bin/sh
+exit 101
+EOF
+chmod 755 /usr/sbin/policy-rc.d
 locale-gen en_US.UTF-8
 update-locale LANG=en_US.UTF-8
 echo vagrant > /etc/hostname
 echo "127.0.0.1 vagrant" >> /etc/hosts
-apt-get update -y
+echo "deb http://archive.ubuntu.com/ubuntu/ wily universe" >> /etc/apt/sources.list
+echo "deb http://archive.ubuntu.com/ubuntu/ wily-updates universe" >> /etc/apt/sources.list
+apt-get update -y || apt-get update -y
 apt-get upgrade -y
-apt-get install -y linux-image-virtual linux-headers-virtual openssh-server sudo adduser vim less grub-pc apt-transport-https lsb-release net-tools
+apt-get install -y linux-image-generic openssh-server sudo adduser vim-tiny less grub-pc apt-transport-https lsb-release net-tools zram-config btrfs-tools nfs-common portmap lxd lxd-client
+sed -i -e 's#GRUB_TIMEOUT=10#GRUB_TIMEOUT=1#g' /etc/default/grub
 sed -i -e 's#GRUB_CMDLINE_LINUX=""#GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"#g' /etc/default/grub
 sed -i 's/\(^GRUB_HIDDEN_TIMEOUT.*$\)/#\1/' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
@@ -57,3 +65,4 @@ apt-get -y autoclean
 apt-get -y clean
 find /var/cache -type f -delete
 find /var/lib/apt -type f -delete
+rm /usr/sbin/policy-rc.d
