@@ -2,6 +2,18 @@
 # vi: set ft=ruby :
 
 Vagrant.configure(2) do |config|
-  config.vm.box = "ubuntu-core"
+  config.vm.provider "vmware_fusion" do |vmware|
+        vmware.vmx["MemTrimRate"] = "0"
+        vmware.vmx["MemAllowAutoScaleDown"] = "FALSE"
+        vmware.vmx["mainMem.backing"] = "swap"
+        vmware.vmx["sched.mem.pshare.enable"] = "FALSE"
+        vmware.vmx["snapshot.disabled"] = "TRUE"
+        vmware.vmx["isolation.tools.unity.disable"] = "TRUE"
+        vmware.vmx["unity.allowCompostingInGuest"] = "FALSE"
+        vmware.vmx["unity.enableLaunchMenu"] = "FALSE"
+        vmware.vmx["unity.showBadges"] = "FALSE"
+        vmware.vmx["unity.showBorders"] = "FALSE"
+        vmware.vmx["unity.wasCapable"] = "FALSE"
+  end
   config.vm.synced_folder '.', '/vagrant', disabled: true
 end
