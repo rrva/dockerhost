@@ -1,5 +1,6 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
+Vagrant.require_plugin "vagrant-reload"
 
 Vagrant.configure(2) do |config|
   config.vm.box = "rrva/dockerhost"
@@ -130,4 +131,5 @@ echo net.ipv4.ip_forward=1 >> /etc/sysctl.conf
 sysctl -p
 echo Provisioning done
 HEREDOC
+config.vm.provision :reload
 end
