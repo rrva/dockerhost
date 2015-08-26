@@ -1,6 +1,5 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
-Vagrant.require_plugin "vagrant-reload"
 
 Vagrant.configure(2) do |config|
   config.vm.box = "rrva/dockerhost"
@@ -23,11 +22,9 @@ Name=br0
 
 [Network]
 DHCP=no
-
-[Address]
-Address=10.3.0.10
+Address=10.3.0.10/16
 DNS=10.3.0.1
-Gateway=10.3.0.1
+IPForward=yes
 EOF
 cat <<EOF > /etc/systemd/network/br0.netdev
 [NetDev]
@@ -40,6 +37,7 @@ Name=ens32
 
 [Network]
 DHCP=yes
+IPForward=yes
 EOF
 cat <<EOF > /etc/systemd/network/ens33.network
 [Match]
@@ -69,9 +67,10 @@ WantedBy=multi-user.target
 EOF
 cat <<EOF > /etc/lxc/iptables.sh
 #!/usr/bin/env bash
-iptables -t nat -A POSTROUTING -s 10.3.0.0/16 \! -d 10.3.0.0/16 -o ens32 -j MASQUERADE
+iptables -t nat -A POSTROUTING -s 10.0.0.0/8 \! -d 10.0.0.0/8 -j MASQUERADE
 iptables -I FORWARD 1 -m physdev --physdev-out ens33 --physdev-is-bridged -p udp --dport 67 --sport 68 -j DROP
 EOF
+systemctl enable iptables-special.service
 chmod 755 /etc/lxc/iptables.sh
 sed -i 's#USE_LXC_BRIDGE="true"#USE_LXC_BRIDGE="false"#g' /etc/default/lxc-net
 sed -i 's#lxcbr0#br0#g' /etc/default/lxc-net
@@ -127,9 +126,8 @@ EOF
 
 systemctl enable dnsmasq.service
 systemctl start dnsmasq.service
-echo net.ipv4.ip_forward=1 >> /etc/sysctl.conf
-sysctl -p
+apt-get update -y
+apt-get upgrade -y
 echo Provisioning done
 HEREDOC
-config.vm.provision :reload
 end
