@@ -12,6 +12,7 @@ Vagrant.configure(2) do |config|
       vmware.vmx["numvcpus"] = "4"
   end
   config.vm.network "private_network", ip: "10.3.0.10", netmask: "255.255.0.0", auto_config: false
+  config.vm.synced_folder "/Users", "/Users", type: "nfs", mount_options:['nolock,vers=3,tcp,noatime,actimeo=1,fsc']
 
   config.ssh.shell = 'bash'
   config.vm.provision :shell, :inline => <<-HEREDOC
@@ -128,6 +129,9 @@ systemctl enable dnsmasq.service
 systemctl start dnsmasq.service
 apt-get update -y
 apt-get upgrade -y
+sudo apt-get install cachefilesd
+sudo echo "RUN=yes" > /etc/default/cachefilesd
+service cachefilesd start
 echo Provisioning done
 HEREDOC
 end
