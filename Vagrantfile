@@ -11,7 +11,7 @@ Vagrant.configure(2) do |config|
       vmware.vmx["memsize"] = "8192"
       vmware.vmx["numvcpus"] = "4"
   end
-  config.vm.network "private_network", ip: "10.3.0.10", netmask: "255.255.0.0", auto_config: false
+  config.vm.network "private_network", ip: "172.23.0.10", netmask: "255.255.0.0", auto_config: false
   config.vm.synced_folder "/Users", "/Users", type: "nfs", mount_options:['nolock,vers=3,tcp,noatime,actimeo=1,fsc']
 
   config.ssh.shell = 'bash'
@@ -23,8 +23,8 @@ Name=br0
 
 [Network]
 DHCP=no
-Address=10.3.0.10/16
-DNS=10.3.0.1
+Address=172.23.0.10/16
+DNS=172.23.0.1
 IPForward=yes
 EOF
 cat <<EOF > /etc/systemd/network/br0.netdev
@@ -34,7 +34,7 @@ Kind=bridge
 EOF
 cat <<EOF > /etc/systemd/network/ens32.network
 [Match]
-Name=ens32
+Name=ens32 enp0s3
 
 [Network]
 DHCP=yes
@@ -42,7 +42,7 @@ IPForward=yes
 EOF
 cat <<EOF > /etc/systemd/network/ens33.network
 [Match]
-Name=ens33
+Name=ens33 enp0s8
 
 [Network]
 Bridge=br0
@@ -51,7 +51,7 @@ mkdir /lib/systemd/system/docker.service.d
 cat <<EOF > /lib/systemd/system/docker.service.d/docker.conf
 [Service]
 ExecStart=
-ExecStart=/usr/bin/docker daemon -H fd:// --dns 10.3.0.10 --bridge=br0 --iptables=false --fixed-cidr=10.3.1.0/24
+ExecStart=/usr/bin/docker daemon -H fd:// --dns 172.23.0.10 --bridge=br0 --iptables=false --fixed-cidr=172.23.1.0/24
 EOF
 cat <<EOF > /etc/systemd/system/iptables-special.service
 [Unit]
@@ -68,8 +68,9 @@ WantedBy=multi-user.target
 EOF
 cat <<EOF > /etc/lxc/iptables.sh
 #!/usr/bin/env bash
-iptables -t nat -A POSTROUTING -s 10.0.0.0/8 \! -d 10.0.0.0/8 -j MASQUERADE
+iptables -t nat -A POSTROUTING -s 172.16.0.0/12 \! -d 172.16.0.0/12 -j MASQUERADE
 iptables -I FORWARD 1 -m physdev --physdev-out ens33 --physdev-is-bridged -p udp --dport 67 --sport 68 -j DROP
+iptables -I FORWARD 1 -m physdev --physdev-out enp0s8 --physdev-is-bridged -p udp --dport 67 --sport 68 -j DROP
 EOF
 systemctl enable iptables-special.service
 chmod 755 /etc/lxc/iptables.sh
@@ -122,7 +123,7 @@ WantedBy=multi-user.target
 EOF
 cat <<EOF > /etc/dnsmasq.conf
 interface=br0
-dhcp-range=10.3.2.1,10.3.2.255
+dhcp-range=172.23.3.1.1,172.23.3.255
 EOF
 
 systemctl enable dnsmasq.service
