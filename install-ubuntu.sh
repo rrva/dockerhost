@@ -6,7 +6,7 @@ sgdisk -n 2:4096:413695 -c 2:"EFI System Partition" -t 2:ef00 /dev/sda
 sgdisk -n 3:413696:823295 -c 3:"Linux /boot" -t 3:8300 /dev/sda
 ENDSECTOR=`sgdisk -E $1`
 sgdisk -n 4:823296:$ENDSECTOR -c 4:"Linux root" -t 4:8300 /dev/sda
-modprobe brd rd_nr=1 max_part=0 rd_size=$((2*1024*1024))
+modprobe brd rd_nr=1 max_part=0 rd_size=1228800
 mkfs.ext4 /dev/sda3
 mkfs.btrfs /dev/ram0
 mkdir /chroot
