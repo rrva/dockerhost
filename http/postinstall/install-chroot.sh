@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+echo install-chroot starting
 DEBIAN_FRONTEND=noninteractive
 export DEBIAN_FRONTEND
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
@@ -16,7 +18,7 @@ echo "deb http://archive.ubuntu.com/ubuntu/ wily-updates universe" >> /etc/apt/s
 apt-get update -y || apt-get update -y
 apt-get upgrade -y
 apt-get install -y linux-image-generic openssh-server sudo adduser vim-tiny less grub-pc apt-transport-https lsb-release net-tools zram-config btrfs-tools nfs-common portmap lxd lxd-client
-sed -i -e 's#GRUB_TIMEOUT=10#GRUB_TIMEOUT=1#g' /etc/default/grub
+sed -i -e 's#GRUB_TIMEOUT=10#GRUB_TIMEOUT=0#g' /etc/default/grub
 sed -i -e 's#GRUB_CMDLINE_LINUX=""#GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"#g' /etc/default/grub
 sed -i 's/\(^GRUB_HIDDEN_TIMEOUT.*$\)/#\1/' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
@@ -27,7 +29,7 @@ echo -e "Defaults:vagrant  !requiretty\nvagrant ALL=(ALL) NOPASSWD: ALL" >> /etc
 systemctl enable systemd-networkd.service
 systemctl disable display-manager.service
 grep -q "^UseDNS " /etc/ssh/sshd_config && sed "s/^UseDNS .*/UseDNS no/" -i /etc/ssh/sshd_config || sed "$ a\UseDNS no" -i /etc/ssh/sshd_config
-echo -e "/dev/sda4               /               btrfs            rw,compress=lzo,autodefrag,noatime,discard,space_cache        0 1\n/dev/sda3               /boot           ext4            rw,relatime,data=ordered        0 2" >> /etc/fstab
+echo -e "/dev/sda4               /               btrfs            rw,commit=600,compress=lzo,autodefrag,noatime,discard,space_cache        0 1\n/dev/sda3               /boot           ext4            rw,relatime,data=ordered        0 2" >> /etc/fstab
 cd ~vagrant
 mkdir .ssh
 wget https://raw.githubusercontent.com/mitchellh/vagrant/master/keys/vagrant.pub -O .ssh/authorized_keys
