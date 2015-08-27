@@ -19,7 +19,14 @@ curl -s -o /chroot/install-chroot.sh "${HTTP}/install-chroot.sh"
 for f in /sys /proc /dev ; do mount --rbind $f /chroot/$f ; done
 chroot /chroot /bin/bash install-chroot.sh
 mkdir /final
-mkfs.btrfs /dev/sda4
+mkfs.btrfs -L root /dev/sda4
 mount -o compress=zlib /dev/sda4 /final
+rm /chroot/install-chroot.sh
 cp -ax /chroot/. /final
+umount /chroot/boot
+mount /dev/sda3 /final/boot
+for f in /sys /proc /dev ; do mount --rbind $f /final/$f ; done
+curl -s -o /final/install-grub.sh "${HTTP}/install-grub.sh"
+chroot /final /bin/bash install-grub.sh
+rm /final/install-grub.sh
 echo Done installing
