@@ -65,15 +65,11 @@
         ["modifyvm", "{{.Name}}", "--largepages", "on" ],
         ["modifyvm", "{{.Name}}", "--ioapic", "on" ],
         ["modifyvm", "{{.Name}}", "--chipset", "ich9" ],
-        ["modifyvm", "{{.Name}}", "--nictype1", "virtio" ],
-        ["modifyvm", "{{.Name}}", "--nic1", "nat" ],
-        ["modifyvm", "{{.Name}}", "--nictype2", "virtio" ],
-        ["modifyvm", "{{.Name}}", "--keyboard", "usb" ],
         ["storagectl", "{{.Name}}", "--name", "SCSI Controller", "--hostiocache", "on" ],
         ["storageattach", "{{.Name}}", "--storagectl", "SCSI Controller", "--port", "0", "--discard", "on", "--nonrotational", "on"]
       ],
       "vboxmanage_post": [
-        ["modifyvm", "{{.Name}}", "--memory", "2048"],
+        ["modifyvm", "{{.Name}}", "--memory", "2048"]
       ]
     }
   ],
@@ -96,7 +92,7 @@
       "artifact_type": "vagrant.box",
       "metadata": {
           "provider": "vmware_desktop",
-          "version": "0.0.9"
+          "version": "0.0.10"
       }
     },
     {
@@ -106,7 +102,7 @@
       "artifact_type": "vagrant.box",
       "metadata": {
           "provider": "virtualbox",
-          "version": "0.0.9"
+          "version": "0.0.10"
       }
     }]
   ]

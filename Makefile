@@ -1,5 +1,5 @@
 all: http/postinstall/wily-core-amd64.tar.gz Fedora-Server-netinst-x86_64-22.iso
-	packer build -only virtualbox-iso dockerhost.json
+	packer build dockerhost.json
 
 clean:
 	git clean -ffdx

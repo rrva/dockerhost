@@ -83,6 +83,7 @@ lxc profile device add default eth0 nic parent=br0 nictype=bridged
 sudo -H -u vagrant lxc list
 systemctl daemon-reload
 ifconfig ens33 0.0.0.0
+ifconfig enp0s8 0.0.0.0
 systemctl restart systemd-networkd
 systemctl stop docker
 iptables --flush
