@@ -17,7 +17,7 @@ echo "deb http://archive.ubuntu.com/ubuntu/ wily universe" >> /etc/apt/sources.l
 echo "deb http://archive.ubuntu.com/ubuntu/ wily-updates universe" >> /etc/apt/sources.list
 apt-get update -y || apt-get update -y
 apt-get upgrade -y
-apt-get install -y linux-image-generic openssh-server sudo adduser vim-tiny less grub-pc apt-transport-https lsb-release net-tools zram-config btrfs-tools nfs-common portmap lxd lxd-client
+apt-get install -y linux-image-generic openssh-server sudo adduser vim-tiny less grub-pc apt-transport-https lsb-release net-tools zram-config btrfs-tools nfs-common portmap lxd lxd-client iputils-ping curl
 sed -i -e 's#GRUB_TIMEOUT=10#GRUB_TIMEOUT=0#g' /etc/default/grub
 sed -i -e 's#GRUB_CMDLINE_LINUX=""#GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"#g' /etc/default/grub
 sed -i 's/\(^GRUB_HIDDEN_TIMEOUT.*$\)/#\1/' /etc/default/grub
@@ -25,6 +25,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 grub-install /dev/sda
 adduser vagrant --disabled-password --gecos ""
 echo -e "vagrant:vagrant" | chpasswd
+echo -e "root:vagrant" | chpasswd
 echo -e "Defaults:vagrant  !requiretty\nvagrant ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 systemctl enable systemd-networkd.service
 systemctl disable display-manager.service
@@ -62,6 +63,9 @@ EOF
 systemctl enable docker.service
 systemctl enable docker-tcp.socket
 adduser vagrant docker
+apt-get -y clean
+chmod 755 /install-vmtool.sh
+/install-vmtool.sh
 apt-get -y autoremove --purge
 apt-get -y autoclean
 apt-get -y clean

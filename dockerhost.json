@@ -3,7 +3,7 @@
     {
       "type": "vmware-iso",
       "boot_command": [
-        "<tab> inst.text inst.sshd url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/postinstall selinux=0<enter>"
+        "<tab> selinux=0 inst.text inst.sshd url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/postinstall elevator=noop<enter>"
       ],
       "http_directory": "http",
       "disk_size": 65536,
@@ -16,18 +16,27 @@
       "ssh_password": "",
       "shutdown_command": "poweroff",
       "vmx_data": {
-        "memsize": "2048",
-        "numvcpus": "2"
+        "memsize": "3072",
+        "numvcpus": "2",
+        "scsi0:0.virtualssd": "1"
+      },
+      "vmx_data_post": {
+        "memsize": "3072",
+        "numvcpus": "2",
+        "scsi0:0.virtualssd": "1"
       }
     },
     {
       "type": "virtualbox-iso",
       "boot_command": [
-        "<tab> inst.text inst.sshd url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/postinstall selinux=0<enter>"
+        "<tab> selinux=0 inst.text inst.sshd url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/postinstall elevator=noop<enter>"
       ],
       "http_directory": "http",
+      "hard_drive_interface": "scsi",
+      "iso_interface": "ide",
       "disk_size": 65536,
       "guest_os_type": "Ubuntu_64",
+      "guest_additions_path": "/VBoxGuestAdditions_{{.Version}}.iso",
       "iso_checksum_type": "none",
       "iso_urls": [ "Fedora-Server-netinst-x86_64-22.iso", "http://dl.fedoraproject.org/pub/fedora/linux/releases/22/Server/x86_64/iso/Fedora-Server-netinst-x86_64-22.iso" ],
       "boot_wait": "10s",
@@ -35,9 +44,60 @@
       "ssh_username": "root",
       "ssh_password": "",
       "shutdown_command": "poweroff",
+      "virtualbox_version_file": "/.vbox_version",
       "vboxmanage": [
+        ["modifyvm", "{{.Name}}", "--memory", "3072"],
+        ["modifyvm", "{{.Name}}", "--cpus", "2"],
+        ["modifyvm", "{{.Name}}", "--bioslogodisplaytime", "0" ],
+        ["modifyvm", "{{.Name}}", "--bioslogofadein", "off" ],
+        ["modifyvm", "{{.Name}}", "--bioslogofadeout", "off" ],
+        ["modifyvm", "{{.Name}}", "--biosbootmenu", "disabled" ],
+        ["modifyvm", "{{.Name}}", "--acpi", "on" ],
+        ["modifyvm", "{{.Name}}", "--rtcuseutc", "on" ],
+        ["modifyvm", "{{.Name}}", "--pae", "on" ],
+        ["modifyvm", "{{.Name}}", "--longmode", "on" ],
+        ["modifyvm", "{{.Name}}", "--hpet", "on" ],
+        ["modifyvm", "{{.Name}}", "--hwvirtex", "on" ],
+        ["modifyvm", "{{.Name}}", "--vtxux", "off" ],
+        ["modifyvm", "{{.Name}}", "--accelerate3d", "off" ],
+        ["modifyvm", "{{.Name}}", "--vtxvpid", "on" ],
+        ["modifyvm", "{{.Name}}", "--nestedpaging", "on" ],
+        ["modifyvm", "{{.Name}}", "--largepages", "on" ],
+        ["modifyvm", "{{.Name}}", "--ioapic", "on" ],
+        ["modifyvm", "{{.Name}}", "--chipset", "ich9" ],
+        ["modifyvm", "{{.Name}}", "--nictype1", "virtio" ],
+        ["modifyvm", "{{.Name}}", "--nic1", "nat" ],
+        ["modifyvm", "{{.Name}}", "--nictype2", "virtio" ],
+        ["modifyvm", "{{.Name}}", "--keyboard", "usb" ],
+        ["storagectl", "{{.Name}}", "--name", "SCSI Controller", "--hostiocache", "on" ],
+        ["storageattach", "{{.Name}}", "--storagectl", "SCSI Controller", "--port", "0", "--discard", "on", "--nonrotational", "on"]
+      ],
+      "vboxmanage_post": [
         ["modifyvm", "{{.Name}}", "--memory", "2048"],
-        ["modifyvm", "{{.Name}}", "--cpus", "2"]
+        ["modifyvm", "{{.Name}}", "--cpus", "2"],
+        ["modifyvm", "{{.Name}}", "--bioslogodisplaytime", "0" ],
+        ["modifyvm", "{{.Name}}", "--bioslogofadein", "off" ],
+        ["modifyvm", "{{.Name}}", "--bioslogofadeout", "off" ],
+        ["modifyvm", "{{.Name}}", "--biosbootmenu", "disabled" ],
+        ["modifyvm", "{{.Name}}", "--acpi", "on" ],
+        ["modifyvm", "{{.Name}}", "--rtcuseutc", "on" ],
+        ["modifyvm", "{{.Name}}", "--pae", "on" ],
+        ["modifyvm", "{{.Name}}", "--longmode", "on" ],
+        ["modifyvm", "{{.Name}}", "--hpet", "on" ],
+        ["modifyvm", "{{.Name}}", "--hwvirtex", "on" ],
+        ["modifyvm", "{{.Name}}", "--vtxux", "off" ],
+        ["modifyvm", "{{.Name}}", "--accelerate3d", "off" ],
+        ["modifyvm", "{{.Name}}", "--vtxvpid", "on" ],
+        ["modifyvm", "{{.Name}}", "--nestedpaging", "on" ],
+        ["modifyvm", "{{.Name}}", "--largepages", "on" ],
+        ["modifyvm", "{{.Name}}", "--ioapic", "on" ],
+        ["modifyvm", "{{.Name}}", "--chipset", "ich9" ],
+        ["modifyvm", "{{.Name}}", "--nictype1", "virtio" ],
+        ["modifyvm", "{{.Name}}", "--nic1", "nat" ],
+        ["modifyvm", "{{.Name}}", "--nictype2", "virtio" ],
+        ["modifyvm", "{{.Name}}", "--keyboard", "usb" ],
+        ["storagectl", "{{.Name}}", "--name", "SCSI Controller", "--hostiocache", "on" ],
+        ["storageattach", "{{.Name}}", "--storagectl", "SCSI Controller", "--port", "0", "--discard", "on", "--nonrotational", "on"]
       ]
     }
   ],
@@ -60,7 +120,7 @@
       "artifact_type": "vagrant.box",
       "metadata": {
           "provider": "vmware_desktop",
-          "version": "0.0.6"
+          "version": "0.0.9"
       }
     },
     {
@@ -70,7 +130,7 @@
       "artifact_type": "vagrant.box",
       "metadata": {
           "provider": "virtualbox",
-          "version": "0.0.6"
+          "version": "0.0.9"
       }
     }]
   ]
