@@ -6,13 +6,14 @@ Vagrant.configure(2) do |config|
   config.vm.provider "virtualbox" do |vb|
      vb.memory = "4096"
      vb.cpus = 4
+     vb.customize ['modifyvm', :id, '--nicpromisc2', 'allow-all']
   end
   config.vm.provider "vmware_fusion" do |vmware|
       vmware.vmx["memsize"] = "8192"
       vmware.vmx["numvcpus"] = "4"
   end
   config.vm.network "private_network", ip: "172.23.0.10", netmask: "255.255.0.0", auto_config: false
-  #config.vm.synced_folder "/Users", "/Users", type: "nfs", mount_options:['nolock,vers=3,tcp,noatime,actimeo=1,fsc']
+  config.vm.synced_folder "/Users", "/Users", type: "nfs", mount_options:['nolock,vers=3,tcp,noatime,actimeo=1,fsc']
 
   config.ssh.shell = 'bash'
   config.vm.provision :shell, :inline => <<-HEREDOC
@@ -34,7 +35,7 @@ Kind=bridge
 EOF
 cat <<EOF > /etc/systemd/network/ens32.network
 [Match]
-Name=ens32 enp0s3
+Name=ens32 enp0s3 eth0
 
 [Network]
 DHCP=yes
@@ -42,7 +43,7 @@ IPForward=yes
 EOF
 cat <<EOF > /etc/systemd/network/ens33.network
 [Match]
-Name=ens33 enp0s8
+Name=ens33 enp0s8 eth1
 
 [Network]
 Bridge=br0
