@@ -72,6 +72,7 @@ cat <<EOF > /etc/lxc/iptables.sh
 iptables -t nat -A POSTROUTING -s 172.16.0.0/12 \! -d 172.16.0.0/12 -j MASQUERADE
 iptables -I FORWARD 1 -m physdev --physdev-out ens33 --physdev-is-bridged -p udp --dport 67 --sport 68 -j DROP
 iptables -I FORWARD 1 -m physdev --physdev-out enp0s8 --physdev-is-bridged -p udp --dport 67 --sport 68 -j DROP
+iptables -I FORWARD 1 -m physdev --physdev-out eth1 --physdev-is-bridged -p udp --dport 67 --sport 68 -j DROP
 EOF
 systemctl enable iptables-special.service
 chmod 755 /etc/lxc/iptables.sh
@@ -85,6 +86,7 @@ sudo -H -u vagrant lxc list
 systemctl daemon-reload
 ifconfig ens33 0.0.0.0
 ifconfig enp0s8 0.0.0.0
+ifconfig eth1 0.0.0.0
 systemctl restart systemd-networkd
 systemctl stop docker
 iptables --flush
