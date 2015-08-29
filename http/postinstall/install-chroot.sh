@@ -31,7 +31,7 @@ echo -e "Defaults:vagrant  !requiretty\nvagrant ALL=(ALL) NOPASSWD: ALL" >> /etc
 systemctl enable systemd-networkd.service
 systemctl disable display-manager.service
 grep -q "^UseDNS " /etc/ssh/sshd_config && sed "s/^UseDNS .*/UseDNS no/" -i /etc/ssh/sshd_config || sed "$ a\UseDNS no" -i /etc/ssh/sshd_config
-echo -e "/dev/sda4               /               btrfs            rw,commit=600,compress=lzo,autodefrag,noatime,discard,space_cache        0 1\n/dev/sda3               /boot           ext4            rw,relatime,data=ordered        0 2" >> /etc/fstab
+echo -e "/dev/sda4               /               btrfs            rw,compress=lzo,autodefrag,noatime,discard,space_cache        0 1\n/dev/sda3               /boot           ext4            rw,relatime,data=ordered        0 2" >> /etc/fstab
 cd ~vagrant
 mkdir .ssh
 wget https://raw.githubusercontent.com/mitchellh/vagrant/master/keys/vagrant.pub -O .ssh/authorized_keys
