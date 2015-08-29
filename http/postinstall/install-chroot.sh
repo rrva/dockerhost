@@ -64,6 +64,7 @@ EOF
 systemctl enable docker.service
 systemctl enable docker-tcp.socket
 adduser vagrant docker
+adduser vagrant lxd
 apt-get -y clean
 chmod 755 /install-vmtool.sh
 /install-vmtool.sh
