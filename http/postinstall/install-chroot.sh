@@ -15,6 +15,7 @@ echo vagrant > /etc/hostname
 echo "127.0.0.1 vagrant" >> /etc/hosts
 echo "deb http://archive.ubuntu.com/ubuntu/ wily universe" >> /etc/apt/sources.list
 echo "deb http://archive.ubuntu.com/ubuntu/ wily-updates universe" >> /etc/apt/sources.list
+echo "deb http://archive.ubuntu.com/ubuntu/ wily-security universe" >> /etc/apt/sources.list
 apt-get update -y || apt-get update -y
 apt-get upgrade -y
 apt-get install -y linux-image-generic openssh-server sudo adduser vim-tiny less grub-pc apt-transport-https lsb-release net-tools zram-config btrfs-tools nfs-common portmap lxd lxd-client iputils-ping curl
@@ -43,7 +44,7 @@ apt-get update -y
 apt-get install -y docker-engine
 cat << EOF > /etc/systemd/network/dhcp.network
 [Match]
-Name=en*
+Name=en* eth*
 
 [Network]
 DHCP=yes
@@ -62,10 +63,13 @@ WantedBy=sockets.target
 EOF
 systemctl enable docker.service
 systemctl enable docker-tcp.socket
+systemctl disable systemd-timesyncd
 adduser vagrant docker
 apt-get -y clean
 chmod 755 /install-vmtool.sh
 /install-vmtool.sh
+apt-get upgrade -y
+apt-get remove -y gcc-5 cpp-5 libgcc-5-dev thermald linux-firmware
 apt-get -y autoremove --purge
 apt-get -y autoclean
 apt-get -y clean

@@ -19,11 +19,6 @@
         "memsize": "3072",
         "numvcpus": "2",
         "scsi0:0.virtualssd": "1"
-      },
-      "vmx_data_post": {
-        "memsize": "3072",
-        "numvcpus": "2",
-        "scsi0:0.virtualssd": "1"
       }
     },
     {
@@ -92,7 +87,7 @@
       "artifact_type": "vagrant.box",
       "metadata": {
           "provider": "vmware_desktop",
-          "version": "0.0.10"
+          "version": "0.0.11"
       }
     },
     {
@@ -102,7 +97,7 @@
       "artifact_type": "vagrant.box",
       "metadata": {
           "provider": "virtualbox",
-          "version": "0.0.10"
+          "version": "0.0.11"
       }
     }]
   ]
