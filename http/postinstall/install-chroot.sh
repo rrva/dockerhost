@@ -63,7 +63,6 @@ WantedBy=sockets.target
 EOF
 systemctl enable docker.service
 systemctl enable docker-tcp.socket
-systemctl disable systemd-timesyncd
 adduser vagrant docker
 apt-get -y clean
 chmod 755 /install-vmtool.sh
