@@ -137,9 +137,6 @@ EOF
 
 systemctl enable dnsmasq.service
 systemctl start dnsmasq.service
-apt-get update -y
-apt-get upgrade -y
-sudo apt-get install cachefilesd
 sudo echo "RUN=yes" > /etc/default/cachefilesd
 service cachefilesd start
 echo Provisioning done
