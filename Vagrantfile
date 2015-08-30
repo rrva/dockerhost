@@ -132,7 +132,7 @@ WantedBy=multi-user.target
 EOF
 cat <<EOF > /etc/dnsmasq.conf
 interface=br0
-dhcp-range=172.23.3.1.1,172.23.3.255
+dhcp-range=172.23.3.1,172.23.3.255
 EOF
 
 systemctl enable dnsmasq.service
