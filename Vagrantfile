@@ -139,6 +139,9 @@ systemctl enable dnsmasq.service
 systemctl start dnsmasq.service
 sudo echo "RUN=yes" > /etc/default/cachefilesd
 service cachefilesd start
+lxc config set core.trust_password blah
+lxc config set core.https_address [::]:8443
+systemctl disable lxc lxc-net lxd-unix.socket
 echo Provisioning done
 HEREDOC
 end
