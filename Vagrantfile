@@ -2,6 +2,9 @@
 # vi: set ft=ruby :
 
 Vagrant.configure(2) do |config|
+  if Vagrant.has_plugin?("vagrant-timezone")
+    config.timezone.value = :host
+  end
   config.vm.box = "rrva/dockerhost"
   config.vm.provider "virtualbox" do |vb|
      vb.memory = "4096"
