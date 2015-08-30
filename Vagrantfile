@@ -144,4 +144,7 @@ lxc config set core.https_address [::]:8443
 systemctl disable lxc lxc-net lxd-unix.socket
 echo Provisioning done
 HEREDOC
+if Vagrant.has_plugin?("vagrant-reload")
+    config.vm.provision :reload
+end
 end
