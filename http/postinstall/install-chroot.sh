@@ -63,6 +63,7 @@ WantedBy=sockets.target
 EOF
 systemctl enable docker.service
 systemctl enable docker-tcp.socket
+systemctl enable lxd.service
 adduser vagrant docker
 adduser vagrant lxd
 apt-get -y clean
