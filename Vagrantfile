@@ -38,7 +38,7 @@ Kind=bridge
 EOF
 cat <<EOF > /etc/systemd/network/ens32.network
 [Match]
-Name=ens32 enp0s3 eth0
+Name=ens32 enp0s3 eth0 eno16777728
 
 [Network]
 DHCP=yes
@@ -46,7 +46,7 @@ IPForward=yes
 EOF
 cat <<EOF > /etc/systemd/network/ens33.network
 [Match]
-Name=ens33 enp0s8 eth1
+Name=ens33 enp0s8 eth1 eno33554952
 
 [Network]
 Bridge=br0
@@ -76,6 +76,7 @@ iptables -t nat -A POSTROUTING -s 172.16.0.0/12 \! -d 172.16.0.0/12 -j MASQUERAD
 iptables -I FORWARD 1 -m physdev --physdev-out ens33 --physdev-is-bridged -p udp --dport 67 --sport 68 -j DROP
 iptables -I FORWARD 1 -m physdev --physdev-out enp0s8 --physdev-is-bridged -p udp --dport 67 --sport 68 -j DROP
 iptables -I FORWARD 1 -m physdev --physdev-out eth1 --physdev-is-bridged -p udp --dport 67 --sport 68 -j DROP
+iptables -I FORWARD 1 -m physdev --physdev-out eno33554952 --physdev-is-bridged -p udp --dport 67 --sport 68 -j DROP
 EOF
 systemctl enable iptables-special.service
 chmod 755 /etc/lxc/iptables.sh
@@ -90,6 +91,7 @@ systemctl daemon-reload
 ifconfig ens33 0.0.0.0
 ifconfig enp0s8 0.0.0.0
 ifconfig eth1 0.0.0.0
+ifconfig eno33554952 0.0.0.0
 systemctl restart systemd-networkd
 systemctl stop docker
 iptables --flush
