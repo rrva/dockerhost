@@ -143,6 +143,7 @@ lxc config set core.trust_password blah
 lxc config set core.https_address [::]:8443
 systemctl disable lxc lxc-net lxd-unix.socket
 systemctl enable lxd
+systemctl start lxd
 echo Provisioning done
 HEREDOC
 if Vagrant.has_plugin?("vagrant-reload")
