@@ -63,6 +63,7 @@
         ["modifyvm", "{{.Name}}", "--largepages", "on" ],
         ["modifyvm", "{{.Name}}", "--ioapic", "on" ],
         ["modifyvm", "{{.Name}}", "--chipset", "ich9" ],
+        ["modifyvm", "{{.Name}}", "--nictype1", "virtio" ],
         ["storagectl", "{{.Name}}", "--name", "SCSI Controller", "--hostiocache", "on" ],
         ["storageattach", "{{.Name}}", "--storagectl", "SCSI Controller", "--port", "0", "--discard", "on", "--nonrotational", "on"]
       ],
