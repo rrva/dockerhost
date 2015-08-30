@@ -13,7 +13,7 @@ Vagrant.configure(2) do |config|
       vmware.vmx["numvcpus"] = "4"
   end
   config.vm.network "private_network", ip: "172.23.0.10", netmask: "255.255.0.0", auto_config: false
-  config.vm.synced_folder "/Users", "/Users", type: "nfs", mount_options:['nolock,vers=3,tcp,noatime,actimeo=1,fsc']
+  #config.vm.synced_folder "/Users", "/Users", type: "nfs", mount_options:['nolock,vers=3,tcp,noatime,actimeo=1,fsc']
 
   config.ssh.shell = 'bash'
   config.vm.provision :shell, :inline => <<-HEREDOC
