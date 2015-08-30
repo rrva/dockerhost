@@ -32,7 +32,7 @@ for f in /sys /proc /dev ; do mount --rbind $f /chroot/$f ; done
 chroot /chroot /bin/bash install-chroot.sh
 mkdir /final
 mkfs.btrfs -m single -L root /dev/sda4
-mount -o compress=zlib /dev/sda4 /final
+mount -o ssd,compress=zlib /dev/sda4 /final
 rm /chroot/install-chroot.sh
 cp -ax /chroot/. /final
 umount /chroot/boot
