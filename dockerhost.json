@@ -15,9 +15,12 @@
       "ssh_username": "root",
       "ssh_password": "",
       "shutdown_command": "poweroff",
+      "version": "10",
       "vmx_data": {
         "memsize": "3072",
         "numvcpus": "2",
+        "ethernet0.virtualdev": "vmxnet3",
+        "scsi0.virtualdev": "pvscsi",
         "scsi0:0.virtualssd": "1"
       }
     },
