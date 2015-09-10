@@ -2,7 +2,7 @@
 import sys
 kernel_name="Linux"
 node_name="vagrant"
-kernel_release="4.1.0-3-generic"
+kernel_release="4.2.0-7-generic"
 kernel_version="#3-Ubuntu SMP Tue Jul 28 12:25:10 UTC 2015"
 machine="x86_64"
 processor="x86_64"

@@ -64,6 +64,7 @@
         ["modifyvm", "{{.Name}}", "--ioapic", "on" ],
         ["modifyvm", "{{.Name}}", "--chipset", "ich9" ],
         ["modifyvm", "{{.Name}}", "--nictype1", "virtio" ],
+        ["modifyvm", "{{.Name}}", "--natdnsproxy1", "on" ],
         ["storagectl", "{{.Name}}", "--name", "SCSI Controller", "--hostiocache", "on" ],
         ["storageattach", "{{.Name}}", "--storagectl", "SCSI Controller", "--port", "0", "--discard", "on", "--nonrotational", "on"]
       ],
@@ -91,7 +92,7 @@
       "artifact_type": "vagrant.box",
       "metadata": {
           "provider": "vmware_desktop",
-          "version": "0.0.11"
+          "version": "0.0.16"
       }
     },
     {
@@ -101,7 +102,7 @@
       "artifact_type": "vagrant.box",
       "metadata": {
           "provider": "virtualbox",
-          "version": "0.0.11"
+          "version": "0.0.16"
       }
     }]
   ]

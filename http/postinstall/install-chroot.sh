@@ -75,4 +75,6 @@ apt-get -y autoclean
 apt-get -y clean
 find /var/cache -type f -delete
 find /var/lib/apt -type f -delete
+systemctl enable systemd-resolved
+ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
 rm /usr/sbin/policy-rc.d
