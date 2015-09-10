@@ -18,7 +18,7 @@ echo "deb http://archive.ubuntu.com/ubuntu/ wily-updates universe" >> /etc/apt/s
 echo "deb http://archive.ubuntu.com/ubuntu/ wily-security universe" >> /etc/apt/sources.list
 apt-get update -y || apt-get update -y
 apt-get upgrade -y
-apt-get install -y linux-image-generic openssh-server sudo adduser vim-tiny less grub-pc apt-transport-https lsb-release net-tools zram-config btrfs-tools nfs-common portmap lxd lxd-client iputils-ping curl cachefilesd
+apt-get install -y linux-image-generic openssh-server sudo adduser vim-tiny less grub-pc apt-transport-https lsb-release net-tools zram-config btrfs-tools nfs-common portmap fuse lxd lxd-client iputils-ping curl cachefilesd
 sed -i -e 's#GRUB_TIMEOUT=10#GRUB_TIMEOUT=0#g' /etc/default/grub
 sed -i -e 's#GRUB_CMDLINE_LINUX=""#GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"#g' /etc/default/grub
 sed -i 's/\(^GRUB_HIDDEN_TIMEOUT.*$\)/#\1/' /etc/default/grub
@@ -76,5 +76,6 @@ apt-get -y clean
 find /var/cache -type f -delete
 find /var/lib/apt -type f -delete
 systemctl enable systemd-resolved
+rm /etc/resolv.conf
 ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
 rm /usr/sbin/policy-rc.d
