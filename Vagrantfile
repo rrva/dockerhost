@@ -11,6 +11,7 @@ Vagrant.configure(2) do |config|
      vb.cpus = 4
      vb.customize ['modifyvm', :id, '--nicpromisc2', 'allow-all']
   end
+  config.ssh.forward_agent = true
   config.vm.provider "vmware_fusion" do |vmware|
       vmware.vmx["memsize"] = "8192"
       vmware.vmx["numvcpus"] = "4"
