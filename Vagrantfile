@@ -15,6 +15,18 @@ Vagrant.configure(2) do |config|
   config.vm.provider "vmware_fusion" do |vmware|
       vmware.vmx["memsize"] = "8192"
       vmware.vmx["numvcpus"] = "4"
+      vmware.vmx["MemTrimRate"] = "0"
+      vmware.vmx["MemAllowAutoScaleDown"] = "FALSE"
+      vmware.vmx["mainMem.backing"] = "swap"
+      vmware.vmx["sched.mem.pshare.enable"] = "FALSE"
+      vmware.vmx["sched.mem.maxmemctl"] = "0"
+      vmware.vmx["snapshot.disabled"] = "TRUE"
+      vmware.vmx["isolation.tools.unity.disable"] = "TRUE"
+      vmware.vmx["unity.allowCompostingInGuest"] = "FALSE"
+      vmware.vmx["unity.enableLaunchMenu"] = "FALSE"
+      vmware.vmx["unity.showBadges"] = "FALSE"
+      vmware.vmx["unity.showBorders"] = "FALSE"
+      vmware.vmx["unity.wasCapable"] = "FALSE"
   end
   config.vm.network "private_network", ip: "172.23.0.10", netmask: "255.255.0.0", auto_config: false
   #config.vm.synced_folder "/Users", "/Users", type: "nfs", mount_options:['nolock,vers=3,tcp,noatime,actimeo=1,fsc']
